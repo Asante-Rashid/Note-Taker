@@ -1,27 +1,9 @@
-// DEPENDENCIES
-const express = require('express');
-const http = require('http');
-const fs = require('fs');
-const fetch = require('fetch');
-const path = require('path');
-
-// Tells node that we are creating an "express" server
-const app = express();
-
-// Sets an initial port. Used in listner
-const PORT = process.env.PORT || 9090;
-
-// Sets up the Express app to handle data parsing
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-
 let noteTitle;
 let noteText;
 let saveNoteBtn;
 let newNoteBtn;
 let noteList;
 
-// TODO window is undefined. need to link to correct route
 if (window.location.pathname === '/notes') {
   noteTitle = document.querySelector('.note-title');
   noteText = document.querySelector('.note-textarea');
@@ -44,8 +26,7 @@ const hide = (elem) => {
 let activeNote = {};
 
 const getNotes = () =>
-
-  fetch('./db/db', {  //changed from API/notes
+  fetch('/api/notes', {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -53,7 +34,7 @@ const getNotes = () =>
   });
 
 const saveNote = (note) =>
-  fetch('./db/db', {  //changed from API/notes
+  fetch('/api/notes', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -62,7 +43,7 @@ const saveNote = (note) =>
   });
 
 const deleteNote = (id) =>
-  fetch(`./db/db/${id}`, {  //changed from API/notes
+  fetch(`/api/notes/${id}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
@@ -189,7 +170,6 @@ const renderNoteList = async (notes) => {
 // Gets notes from the db and renders them to the sidebar
 const getAndRenderNotes = () => getNotes().then(renderNoteList);
 
-// TODO fix route
 if (window.location.pathname === '/notes') {
   saveNoteBtn.addEventListener('click', handleNoteSave);
   newNoteBtn.addEventListener('click', handleNewNoteView);
@@ -198,7 +178,3 @@ if (window.location.pathname === '/notes') {
 }
 
 getAndRenderNotes();
-
-app.listen(PORT, () => {
-  console.log(`App listening on PORT: ${PORT}`);
-});
