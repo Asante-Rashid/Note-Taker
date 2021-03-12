@@ -33,6 +33,20 @@ const getNotes = () =>
     },
   });
 
+saveNoteBtn.addEventListener('click', (e) => {
+  e.preventDefault();
+  const handleNoteSave = () => {
+    const newNote = {
+      title: noteTitle.value,
+      text: noteText.value,
+    };
+    saveNote(newNote).then(() => {
+      getAndRenderNotes();
+      renderActiveNote();
+    });
+  };
+});
+
 const saveNote = (note) =>
   fetch('/api/notes', {
     method: 'POST',
@@ -64,16 +78,6 @@ const renderActiveNote = () => {
   }
 };
 
-const handleNoteSave = () => {
-  const newNote = {
-    title: noteTitle.value,
-    text: noteText.value,
-  };
-  saveNote(newNote).then(() => {
-    getAndRenderNotes();
-    renderActiveNote();
-  });
-};
 
 // Delete the clicked note
 const handleNoteDelete = (e) => {
@@ -101,10 +105,13 @@ const handleNoteView = (e) => {
 };
 
 // Sets the activeNote to and empty object and allows the user to enter a new note
+newNoteBtn.addEventListener('click', (e) => {
+  e.preventDefault();
 const handleNewNoteView = (e) => {
   activeNote = {};
   renderActiveNote();
 };
+});
 
 const handleRenderSaveBtn = () => {
   if (!noteTitle.value.trim() || !noteText.value.trim()) {
