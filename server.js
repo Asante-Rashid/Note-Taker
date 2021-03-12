@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const notesData = require('./db/db.js');
 
 
 const app = express();
@@ -17,6 +18,8 @@ app.get('/notes', (req, res) => {
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, './public/index.html'));
 });
+
+app.get('/api/notes', (req, res) => res.json(notesData));
 
 //API Routes
 
