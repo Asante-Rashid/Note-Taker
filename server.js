@@ -22,7 +22,12 @@ app.get('/', (req, res) => {
 app.get('/api/notes', (req, res) => res.json(notesData));
 
 //API Routes
+// Create New Characters - takes in JSON input
+app.post('/api/notes', (req, res) => {
+    notesData.push(req.body);
+    res.json(notesData);
 
+});
 
 app.listen(PORT, () => {
     console.log(`App listening on PORT: ${PORT}`);
